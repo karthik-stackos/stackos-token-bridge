@@ -79,3 +79,22 @@ REACT_APP_TITLE="Token Bridge"
 REACT_APP_SUBTITLE="Token Bridge"
 REACT_APP_LINK_NAME=""
 REACT_APP_LINK_ADDRESS=""
+
+###Add Custom Allowed Chains
+You can add custom chains using chains fullname(ex: Solana)
+
+REACT_APP_ALLOWED_CHAINS="Solana,Ethereum"
+
+The supported chains listed below here:
+
+```bash
+Aurora
+Avalanche
+Binance Smart Chain
+Ethereum
+Fantom
+Oasis
+Polygon
+Solana
+Terra
+```

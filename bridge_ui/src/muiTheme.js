@@ -6,7 +6,7 @@ export const COLORS = {
   blueWithTransparency: "rgba(25, 117, 230, 0.8)",
   gray: "#4e4e54",
   green: "#0ac2af",
-  greenWithTransparency: "rgba(10, 194, 175, 0.8)",
+  greenWithTransparency: "rgba(0, 0, 0, 0.8)",
   lightGreen: "rgba(51, 242, 223, 1)",
   lightBlue: "#83b9fc",
   nearBlack: "#16171b",

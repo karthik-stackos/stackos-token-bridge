@@ -260,6 +260,7 @@ export default function TokenPicker({
   showLoader?: boolean;
   useTokenId?: boolean;
 }) {
+  console.log('value', value)
   const classes = useStyles();
   const [holderString, setHolderString] = useState("");
   const [tokenIdHolderString, setTokenIdHolderString] = useState("");

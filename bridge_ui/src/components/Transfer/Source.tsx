@@ -72,14 +72,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Source() {
+  
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const sourceChain = useSelector(selectTransferSourceChain);
   const targetChain = useSelector(selectTransferTargetChain);
+  // Procees allowed channel
+  const allowed_chain = process.env.REACT_APP_ALLOWED_CHAINS?.split(",")
+  // filter process chain
+  const filter = CHAINS.filter((elm) => allowed_chain?.find((name) => elm.name === name))
   const targetChainOptions = useMemo(
-    () => CHAINS.filter((c) => c.id !== sourceChain),
-    [sourceChain]
+    () => filter.filter((c) => c.id !== sourceChain),
+    [filter, sourceChain]
   );
   const isSourceTransferDisabled = useMemo(() => {
     return getIsTransferDisabled(sourceChain, true);
@@ -181,7 +186,7 @@ function Source() {
             value={sourceChain}
             onChange={handleSourceChange}
             disabled={shouldLockFields}
-            chains={CHAINS}
+            chains={filter}
           />
         </div>
         <div className={classes.chainSelectArrow}>
