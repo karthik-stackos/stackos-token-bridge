@@ -40,12 +40,8 @@ interface ChainSelectProps extends OutlinedTextFieldProps {
 }
 
 export default function ChainSelect({ chains, ...rest }: ChainSelectProps) {
-  // Procees allowed channel
-  // const allowed_chain = process.env.REACT_APP_ALLOWED_CHAINS?.split(",")
   const classes = useStyles();
   const isBeta = useBetaContext();
-  // filter process chain
-  // const filter = chains.filter((elm) => allowed_chain?.find((name) => elm.name === name))
   const filteredChains = useMemo(
     () =>
       chains.filter(({ id }) => (isBeta ? true : !BETA_CHAINS.includes(id))),

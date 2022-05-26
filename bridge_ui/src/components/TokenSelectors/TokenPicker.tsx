@@ -25,10 +25,12 @@ import { useSelector } from "react-redux";
 import useMarketsMap from "../../hooks/useMarketsMap";
 import { NFTParsedTokenAccount } from "../../store/nftSlice";
 import { selectTransferTargetChain } from "../../store/selectors";
+import { allowedChainedSort } from "../../utils/allowedChainedSort";
 import { balancePretty } from "../../utils/balancePretty";
 import { AVAILABLE_MARKETS_URL, CHAINS_BY_ID } from "../../utils/consts";
 import { shortenAddress } from "../../utils/solana";
 import NFTViewer from "./NFTViewer";
+
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -134,7 +136,6 @@ export const BasicAccountRender = (
   const name = account.name || "Unknown";
   const tokenId = account.tokenId;
   const shouldDisplayBalance = !displayBalance || displayBalance(account);
-
   const nftContent = (
     <div className={classes.tokenOverviewContainer}>
       <div className={classes.tokenImageContainer}>
@@ -188,16 +189,16 @@ export const BasicAccountRender = (
         }
       </div>
       <div>
-        {shouldDisplayBalance ? (
+        {/* {shouldDisplayBalance === true ? ( */}
           <>
             <Typography variant="body2">{"Balance"}</Typography>
             <Typography variant="h6">
               {balancePretty(account.uiAmountString)}
             </Typography>
           </>
-        ) : (
+        {/* ) : (
           <div />
-        )}
+        )} */}
       </div>
     </div>
   );
@@ -260,7 +261,6 @@ export default function TokenPicker({
   showLoader?: boolean;
   useTokenId?: boolean;
 }) {
-  console.log('value', value)
   const classes = useStyles();
   const [holderString, setHolderString] = useState("");
   const [tokenIdHolderString, setTokenIdHolderString] = useState("");
@@ -596,7 +596,10 @@ export default function TokenPicker({
       </DialogContent>
     </Dialog>
   );
-
+  // find token in custom hook
+  const find = allowedChainedSort().filter((elm) => elm.name === CHAINS_BY_ID[chainId].name)[0]
+  // select stackos token
+  const selected = options?.filter((elm) => elm.mintKey === find.token)[0]
   const selectionChip = (
     <div className={classes.selectionButtonContainer}>
       <Button
@@ -606,8 +609,8 @@ export default function TokenPicker({
         startIcon={<KeyboardArrowDownIcon />}
         className={classes.selectionButton}
       >
-        {value ? (
-          <RenderOption account={value} />
+        {value || selected ? (
+          <RenderOption account={value || selected} />
         ) : (
           <Typography color="textSecondary">Select a token</Typography>
         )}

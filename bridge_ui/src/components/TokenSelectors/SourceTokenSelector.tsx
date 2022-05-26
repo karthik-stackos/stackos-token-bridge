@@ -43,7 +43,7 @@ export const TokenSelector = (props: TokenSelectorProps) => {
   const lookupChain = useSelector(
     nft ? selectNFTSourceChain : selectTransferSourceChain
   );
-  const sourceParsedTokenAccount = useSelector(
+  let sourceParsedTokenAccount = useSelector(
     nft
       ? selectNFTSourceParsedTokenAccount
       : selectTransferSourceParsedTokenAccount
