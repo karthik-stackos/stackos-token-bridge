@@ -600,10 +600,11 @@ export default function TokenPicker({
   const find = allowedChainedSort().filter((elm) => elm.name === CHAINS_BY_ID[chainId].name)[0]
   // select stackos token
   const selected = options?.filter((elm) => elm.mintKey === find.token)[0]
+  onChange(selected);
   const selectionChip = (
     <div className={classes.selectionButtonContainer}>
       <Button
-        onClick={openDialog}
+        // onClick={openDialog}
         disabled={disabled}
         variant="outlined"
         startIcon={<KeyboardArrowDownIcon />}

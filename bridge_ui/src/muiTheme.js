@@ -30,7 +30,7 @@ export const theme = responsiveFontSizes(
     palette: {
       type: "dark",
       background: {
-        default: process.env.REACT_APP_BODY_COLOR || '',
+        default: process.env.REACT_APP_BODY_COLOR,
       },
       divider: COLORS.white,
       text: {

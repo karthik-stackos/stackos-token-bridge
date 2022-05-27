@@ -4,6 +4,7 @@ import Discord from "../icons/Discord.svg";
 import Github from "../icons/Github.svg";
 import Medium from "../icons/Medium.svg";
 import StackOS from "../icons/logo.svg";
+import DeCloud from "../icons/DECLOUD_FOUNDATION.svg";
 import Telegram from "../icons/Telegram.svg";
 import Twitter from "../icons/Twitter.svg";
 import Youtube from "../icons/youtube.svg"
@@ -129,6 +130,24 @@ const useStyles = makeStyles((theme) => ({
   },
   poweredByImg: {
     width: '60%'
+  },
+  footer_last_column:
+  {
+    maxWidth: '18em',
+    marginTop: '10px'
+  },
+  footer_last_column_1:
+  {
+    display: 'flex',
+    "& p": {
+      marginRight: '20px',
+      width: '100%',
+        minWidth: '83px'
+    },
+    "& img": {
+      
+
+    },
   }
 }));
 
@@ -252,11 +271,23 @@ export default function Footer() {
             >
               <img src={Twitter} alt="Twitter" />
             </IconButton>
-            <div className={classes.poweredBy}>
-              <Typography className={classes.socialHeader} style={{margin: '0'}}>
-                Powered by:
+            <div className={classes.footer_last_column}>
+            <div className={classes.footer_last_column_1}>
+              <Typography className={classes.socialHeader} >
+                Funded by:
               </Typography>
-              <img src={StackOS} alt="StackOS" className={classes.poweredByImg}/>
+              <a href="https://decloud.org/" target="__blank">
+                <img src={DeCloud} alt="DeCloud" style={{width: '100%'}}/>
+              </a>
+              </div>
+              <div className={classes.footer_last_column_1}>      
+                <Typography className={classes.socialHeader}>
+                  Deployed on:
+                </Typography>
+                <a href="https://www.stackos.io/" target="__blank">
+                <img src={StackOS} alt="StackOS" style={{width: '100%', minWidth: '117px'}}/>
+                </a>
+                </div>
             </div>
           </div>
           <div className={classes.copyWrapper}>

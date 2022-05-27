@@ -140,6 +140,10 @@ export default function EvmTokenPicker(
         onChange(null);
         return Promise.resolve();
       }
+      if (account === undefined) {
+        onChange(null);
+        return Promise.resolve();
+      }
       let v1 = false;
       try {
         v1 = await isWormholev1(provider, account.mintKey, chainId);

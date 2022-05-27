@@ -17,7 +17,7 @@ RUN npm run build
 #RUN --mount=type=cache,uid=1000,gid=1000,target=/home/node/.npm \
 #    npm ci
 # add app
-COPY . ./
+#COPY . ./
 
 
 # => Run container
