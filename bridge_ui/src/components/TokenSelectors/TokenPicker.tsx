@@ -301,7 +301,6 @@ export default function TokenPicker({
           newOption = option;
         }
         await onChange(newOption);
-        closeDialog();
       } catch (e: any) {
         if (e.message?.includes("v1")) {
           setSelectionError(e.message);
@@ -312,7 +311,7 @@ export default function TokenPicker({
         }
       }
     },
-    [getAddress, onChange, closeDialog]
+    [getAddress, onChange]
   );
 
   const resetAccountsWrapper = useCallback(() => {
@@ -599,8 +598,40 @@ export default function TokenPicker({
   // find token in custom hook
   const find = allowedChainedSort().filter((elm) => elm.name === CHAINS_BY_ID[chainId].name)[0]
   // select stackos token
-  const selected = options?.filter((elm) => elm.mintKey === find.token)[0]
-  onChange(selected);
+  value = options?.filter((elm) => elm.mintKey === find.token)[0]
+  useEffect(() => {
+    const handleSelectOptions = async (option: NFTParsedTokenAccount | null) => {
+        setSelectionError("");
+        let newOption = null;
+        try {
+          //Covalent balances tend to be stale, so we make an attempt to correct it at selection time.
+          if (getAddress && !option?.isNativeAsset) {
+            newOption = await getAddress(option!.mintKey, option?.tokenId);
+            newOption = {
+              ...option,
+              ...newOption,
+              // keep logo and uri from covalent / market list / etc (otherwise would be overwritten by undefined)
+              logo: option?.logo || newOption.logo,
+              uri: option?.uri || newOption.uri,
+            } as NFTParsedTokenAccount;
+          } else {
+            newOption = option;
+          }
+          await onChange(newOption);
+        } catch (e: any) {
+          if (e.message?.includes("v1")) {
+            setSelectionError(e.message);
+          } else {
+            setSelectionError(
+              "Unable to retrieve required information about this token. Ensure your wallet is connected, then refresh the list."
+            );
+          }
+        }
+      }
+    if(value !== undefined){
+      handleSelectOptions(value)
+    }
+  }, [value])
   const selectionChip = (
     <div className={classes.selectionButtonContainer}>
       <Button
@@ -610,8 +641,8 @@ export default function TokenPicker({
         startIcon={<KeyboardArrowDownIcon />}
         className={classes.selectionButton}
       >
-        {value || selected ? (
-          <RenderOption account={value || selected} />
+        {value ? (
+          <RenderOption account={value} />
         ) : (
           <Typography color="textSecondary">Select a token</Typography>
         )}

@@ -84,6 +84,10 @@ function Target() {
   const { error: targetAssetError, data } = useSelector(
     selectTransferTargetAssetWrapper
   );
+
+  const datas1 = useSelector(
+    selectTransferTargetAssetWrapper
+  );
   const {
     targetChain,
     targetAsset,
