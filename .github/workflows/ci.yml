@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
+          file: ./bridge_ui/Dockerfile
           tags: stackos/${{ secrets.PROJECT_NAME }}:${{ steps.image-tag.outputs.tag }}
           outputs: type=docker,dest=/tmp/myimage.tar
 
