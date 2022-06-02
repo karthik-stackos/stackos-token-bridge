@@ -1,0 +1,19 @@
+version: "3.2"
+services:
+ cra-runtime-environment-variables:
+  image: stackos-token-bridge-slim:0.0.1
+  ports:
+   - "3002:3000"
+  environment:
+   - "REACT_APP_PRIMARY_COLOR=#2abfff"
+   - "REACT_APP_SECONDARY_COLOR=#ffffff12"
+   - "REACT_APP_BODY_COLOR=#16171b"
+   - "REACT_APP_TEXT_COLOR=#ffffff"
+   - "REACT_APP_LOGO=https://www.linkpicture.com/q/logo_12.svg"
+   - "REACT_APP_TITLE=Token Bridge"
+   - "REACT_APP_SUBTITLE=Portal is a bridge that offers unlimited transfers across chains for tokens and NFTs wrapped by Wormhole. Unlike many other bridges, you avoid double wrapping and never have to retrace your steps."
+   - "REACT_APP_LINK_NAME=StackOS"
+   - "REACT_APP_LINK_ADDRESS=https://www.home.stackos.io/"
+   - "REACT_APP_CLUSTER=mainnet"
+   - "REACT_APP_ALLOWED_CHAINS=Ethereum:0x56a86d648c435dc707c8405b78e2ae8eb4e60ba4,Binance Smart Chain:0x6855f7bb6287f94ddcc8915e37e73a3c9fee5cf3,Polygon:0x980111ae1b84e50222c8843e3a7a038f36fecd2b"
+   - "REACT_APP_COVALENT_API_KEY=ckey_ac8f912a507e48b2bdd57a6c795"
