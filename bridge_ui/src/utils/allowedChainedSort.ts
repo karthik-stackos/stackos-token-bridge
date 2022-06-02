@@ -1,6 +1,6 @@
-
+declare const window: any;
 export const allowedChainedSort = () =>{
-    const data = process.env.REACT_APP_ALLOWED_CHAINS
+    const data = window._env_.REACT_APP_ALLOWED_CHAINS
 
     let convertArray: any | undefined = data?.split(',')
 

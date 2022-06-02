@@ -30,14 +30,14 @@ export const theme = responsiveFontSizes(
     palette: {
       type: "dark",
       background: {
-        default: process.env.REACT_APP_BODY_COLOR,
+        default: window._env_.REACT_APP_BODY_COLOR,
       },
       divider: COLORS.white,
       text: {
-        primary: process.env.REACT_APP_TEXT_COLOR,
+        primary: window._env_.REACT_APP_TEXT_COLOR,
       },
       primary: {
-        main: process.env.REACT_APP_PRIMARY_COLOR, // #0074FF
+        main: window._env_.REACT_APP_PRIMARY_COLOR, // #0074FF
         light: COLORS.lightBlue,
       },
       secondary: {
@@ -98,7 +98,7 @@ export const theme = responsiveFontSizes(
       },
       MuiAccordion: {
         root: {
-          backgroundColor: process.env.REACT_APP_SECONDARY_COLOR,
+          backgroundColor: window._env_.REACT_APP_SECONDARY_COLOR,
           "&:before": {
             display: "none",
           },
@@ -124,8 +124,8 @@ export const theme = responsiveFontSizes(
         root: {
           borderRadius: "22px",
           letterSpacing: ".1em",
-          backgroundColor: process.env.REACT_APP_PRIMARY_COLOR,
-          borderColor: process.env.REACT_APP_PRIMARY_COLOR,
+          backgroundColor: window._env_.REACT_APP_PRIMARY_COLOR,
+          borderColor: window._env_.REACT_APP_PRIMARY_COLOR,
           
         },
         outlinedSizeSmall: {
@@ -133,19 +133,19 @@ export const theme = responsiveFontSizes(
           fontSize: "0.70rem",
         },
         containedPrimary: {
-          backgroundColor: process.env.REACT_APP_PRIMARY_COLOR,
-          borderColor: process.env.REACT_APP_PRIMARY_COLOR,
-          color: process.env.REACT_APP_TEXT_COLOR,
+          backgroundColor: window._env_.REACT_APP_PRIMARY_COLOR,
+          borderColor: window._env_.REACT_APP_PRIMARY_COLOR,
+          color: window._env_.REACT_APP_TEXT_COLOR,
           "&:hover": {
-            backgroundColor: process.env.REACT_APP_TEXT_COLOR,
-            color: process.env.REACT_APP_PRIMARY_COLOR
+            backgroundColor: window._env_.REACT_APP_TEXT_COLOR,
+            color: window._env_.REACT_APP_PRIMARY_COLOR
           }
         }
         
       },
       MuiLink: {
         root: {
-          color: process.env.REACT_APP_PRIMARY_COLOR,
+          color: window._env_.REACT_APP_PRIMARY_COLOR,
         },
       },
       MuiPaper: {
@@ -162,7 +162,7 @@ export const theme = responsiveFontSizes(
       },
       MuiStep: {
         root: {
-          backgroundColor: process.env.REACT_APP_SECONDARY_COLOR,
+          backgroundColor: window._env_.REACT_APP_SECONDARY_COLOR,
           backdropFilter: "blur(4px)",
           borderRadius: "28px",
           padding: "32px 32px 16px",
@@ -182,7 +182,7 @@ export const theme = responsiveFontSizes(
       },
       MuiStepLabel: {
         label: {
-          color: process.env.REACT_APP_TEXT_COLOR,
+          color: window._env_.REACT_APP_TEXT_COLOR,
           textTransform: "uppercase",
           "&.MuiStepLabel-active": {},
           "&.MuiStepLabel-completed": {},
@@ -190,17 +190,17 @@ export const theme = responsiveFontSizes(
       },
       MuiTabs: {
         root: {
-          borderBottom: `1px solid ${process.env.REACT_APP_TEXT_COLOR}`,
+          borderBottom: `1px solid ${window._env_.REACT_APP_TEXT_COLOR}`,
         },
         indicator: {
           height: "100%",
-          background: process.env.REACT_APP_PRIMARY_COLOR,
+          background: window._env_.REACT_APP_PRIMARY_COLOR,
           zIndex: -1,
         },
       },
       MuiTab: {
         root: {
-          color: process.env.REACT_APP_TEXT_COLOR,
+          color: window._env_.REACT_APP_TEXT_COLOR,
           fontFamily: "Suisse BP Intl, sans-serif",
           fontWeight: "bold",
           fontSize: 18,

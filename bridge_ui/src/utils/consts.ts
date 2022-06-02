@@ -34,12 +34,12 @@ import oasisIcon from "../icons/oasis-network-rose-logo.svg";
 import polygonIcon from "../icons/polygon.svg";
 import solanaIcon from "../icons/solana.svg";
 import terraIcon from "../icons/terra.svg";
-
+declare const window: any;
 export type Cluster = "devnet" | "testnet" | "mainnet";
 export const CLUSTER: Cluster =
-  process.env.REACT_APP_CLUSTER === "mainnet"
+  window._env_.REACT_APP_CLUSTER === "mainnet"
     ? "mainnet"
-    : process.env.REACT_APP_CLUSTER === "testnet"
+    : window._env_.REACT_APP_CLUSTER === "testnet"
     ? "testnet"
     : "devnet";
 export interface ChainInfo {
@@ -352,8 +352,8 @@ export const getEvmChainId = (chainId: ChainId) =>
     : chainId === CHAIN_ID_CELO
     ? CELO_NETWORK_CHAIN_ID
     : undefined;
-export const SOLANA_HOST = process.env.REACT_APP_SOLANA_API_URL
-  ? process.env.REACT_APP_SOLANA_API_URL
+export const SOLANA_HOST = window._env_.REACT_APP_SOLANA_API_URL
+  ? window._env_.REACT_APP_SOLANA_API_URL
   : CLUSTER === "mainnet"
   ? clusterApiUrl("mainnet-beta")
   : CLUSTER === "testnet"
@@ -796,8 +796,8 @@ export const getTokenBridgeAddressForChain = (chainId: ChainId) =>
     ? CELO_TOKEN_BRIDGE_ADDRESS
     : "";
 
-export const COVALENT_API_KEY = process.env.REACT_APP_COVALENT_API_KEY
-  ? process.env.REACT_APP_COVALENT_API_KEY
+export const COVALENT_API_KEY = window._env_.REACT_APP_COVALENT_API_KEY
+  ? window._env_.REACT_APP_COVALENT_API_KEY
   : "";
 
 export const COVALENT_ETHEREUM = 1; // Covalent only supports mainnet and Kovan
