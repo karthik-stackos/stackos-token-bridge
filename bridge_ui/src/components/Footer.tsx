@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }
 }));
-
+declare const window: any;
 export default function Footer() {
   const classes = useStyles();
   return (
@@ -160,7 +160,7 @@ export default function Footer() {
         <div className={classes.flex}>
           <div className={classes.logoWrapper}>
             <RouterLink to={"/transfer"}>
-              <img src={process.env.REACT_APP_LOGO} alt="StackOS" className={classes.wormholeIcon} />
+              <img src={window._env_.REACT_APP_LOGO} alt="StackOS" className={classes.wormholeIcon} />
             </RouterLink>
           </div>
           <div className={classes.spacer} />
@@ -197,14 +197,14 @@ export default function Footer() {
                 Stats
               </Link>
               <Link
-                href={process.env.REACT_APP_LINK_ADDRESS}
+                href={window._env_.REACT_APP_LINK_ADDRESS}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="inherit"
                 underline="hover"
                 className={classes.linkStyle}
               >
-                {process.env.REACT_APP_LINK_NAME}
+                {window._env_.REACT_APP_LINK_NAME}
               </Link>
               <Link
                 component={NavLink}

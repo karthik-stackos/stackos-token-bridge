@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.body2,
     fontWeight: 600,
     fontFamily: "Suisse BP Intl, sans-serif",
-    color: process.env.REACT_APP_PRIMARY_COLOR,
+    color: window._env_.REACT_APP_PRIMARY_COLOR,
     marginLeft: theme.spacing(4),
     textUnderlineOffset: "6px",
     [theme.breakpoints.down("sm")]: {
@@ -140,7 +140,7 @@ function App() {
             to="/transfer"
             className={classes.brandLink}
           >
-            <img src={process.env.REACT_APP_LOGO || StackOS} alt="StackOS" className={classes.wormholeIcon} />
+            <img src={window._env_.REACT_APP_LOGO || StackOS} alt="StackOS" className={classes.wormholeIcon} />
           </Link>
           <div className={classes.spacer} />
           <Hidden implementation="css" xsDown>
@@ -172,13 +172,13 @@ function App() {
                 Stats
               </Link>
               <Link
-                href={process.env.REACT_APP_LINK_ADDRESS}
+                href={window._env_.REACT_APP_LINK_ADDRESS}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="inherit"
                 className={classes.link}
               >
-                {process.env.REACT_APP_LINK_NAME}
+                {window._env_.REACT_APP_LINK_NAME}
               </Link>
             </div>
           </Hidden>
@@ -220,7 +220,7 @@ function App() {
             subtitle={
               <>
                 <Typography>
-                  {process.env.REACT_APP_SUBTITLE}
+                  {window._env_.REACT_APP_SUBTITLE}
                 </Typography>
                 {/* <Typography>
                   Unlike many other bridges, you avoid double wrapping and never
@@ -229,7 +229,7 @@ function App() {
               </>
             }
           >
-            {process.env.REACT_APP_TITLE}
+            {window._env_.REACT_APP_TITLE}
           </HeaderText>
           <Tabs
             value={pathname}

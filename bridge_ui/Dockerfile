@@ -35,10 +35,14 @@ EXPOSE 80
 
 # Copy .env file and shell script to container
 WORKDIR /usr/share/nginx/html
+COPY ./env.sh .
 
 # Add bash
 RUN apk add --no-cache bash
 
+# Make our shell script executable
+RUN chmod +x env.sh
 
 # Start Nginx server
-CMD ["/bin/sh", "-c", "nginx -g \"daemon off;\""]
+# CMD ["/bin/sh", "-c", "nginx -g \"daemon off;\""]
+CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && sleep 30 && nginx -g \"daemon off;\""]
