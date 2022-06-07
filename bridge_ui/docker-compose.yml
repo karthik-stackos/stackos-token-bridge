@@ -1,7 +1,7 @@
 version: "3.2"
 services:
  cra-runtime-environment-variables:
-  image: stackos-token-bridge-slim:0.0.1
+  image: 0612020/stackos-token-bridge:v0.0.7
   ports:
    - "3002:3000"
   environment:
