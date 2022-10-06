@@ -25,3 +25,7 @@ yarn-error.log*
 # ethereum contracts
 /contracts
 /src/ethers-contracts
+
+# Temporary env files
+/public/env-config.js
+env-config.js

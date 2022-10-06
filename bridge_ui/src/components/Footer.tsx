@@ -3,25 +3,15 @@ import { Link as RouterLink, NavLink } from "react-router-dom";
 import Discord from "../icons/Discord.svg";
 import Github from "../icons/Github.svg";
 import Medium from "../icons/Medium.svg";
-import Portal from "../icons/portal_logo_w.svg";
+import StackOS from "../icons/StackOS_Logo_V1.0.svg"
+import DeCloud from "../icons/DECLOUD_FOUNDATION.svg";
 import Telegram from "../icons/Telegram.svg";
 import Twitter from "../icons/Twitter.svg";
-import footerImg from "../images/Footer.png";
+import Youtube from "../icons/youtube.svg"
 
 const useStyles = makeStyles((theme) => ({
   footer: {
     position: "relative",
-  },
-  backdrop: {
-    position: "absolute",
-    zIndex: -1,
-    background: `url(${footerImg})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center 250px",
-    backgroundSize: "cover",
-    width: "100%",
-    height: "100%",
-    opacity: 0.25,
   },
   container: {
     maxWidth: 1100,
@@ -78,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   linkStyle: {
-    color: "white",
+    color: "#2abfff",
     display: "block",
     marginRight: theme.spacing(0),
     marginBottom: theme.spacing(1.5),
@@ -132,18 +122,45 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(0),
     textAlign: "center",
   },
-}));
+  poweredBy: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginTop: '1em',
+    alignItems: 'center'
+  },
+  poweredByImg: {
+    width: '60%'
+  },
+  footer_last_column:
+  {
+    maxWidth: '18em',
+    marginTop: '10px'
+  },
+  footer_last_column_1:
+  {
+    display: 'flex',
+    "& p": {
+      marginRight: '20px',
+      width: '100%',
+        minWidth: '83px'
+    },
+    "& img": {
+      
 
+    },
+  }
+}));
+declare const window: any;
 export default function Footer() {
   const classes = useStyles();
   return (
     <footer className={classes.footer}>
-      <div className={classes.backdrop} />
+      <div />
       <div className={classes.container}>
         <div className={classes.flex}>
           <div className={classes.logoWrapper}>
             <RouterLink to={"/transfer"}>
-              <img src={Portal} alt="Portal" className={classes.wormholeIcon} />
+              <img src={window._env_.REACT_APP_LOGO} alt="StackOS" className={classes.wormholeIcon} />
             </RouterLink>
           </div>
           <div className={classes.spacer} />
@@ -160,7 +177,7 @@ export default function Footer() {
                 Bridge
               </Link>
               <Link
-                href="https://docs.wormholenetwork.com/wormhole/faqs"
+                href="https://curved-variraptor-e0b.notion.site/StackOS-Community-NFT-Nodes-FAQ-37411cf5e7f84aafa9307a9bf5a17f3f"
                 target="_blank"
                 rel="noopener noreferrer"
                 color="inherit"
@@ -180,14 +197,14 @@ export default function Footer() {
                 Stats
               </Link>
               <Link
-                href="https://wormholenetwork.com/"
+                href={window._env_.REACT_APP_LINK_ADDRESS}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="inherit"
                 underline="hover"
                 className={classes.linkStyle}
               >
-                Wormhole
+                {window._env_.REACT_APP_LINK_NAME}
               </Link>
               <Link
                 component={NavLink}
@@ -207,7 +224,7 @@ export default function Footer() {
               Let's be friends
             </Typography>
             <IconButton
-              href="https://discord.gg/wormholecrypto"
+              href="https://discord.gg/W3phTcR8sS"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -215,7 +232,7 @@ export default function Footer() {
               <img src={Discord} alt="Discord" />
             </IconButton>
             <IconButton
-              href="https://github.com/certusone/wormhole"
+              href="https://github.com/stackosofficial"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -223,7 +240,7 @@ export default function Footer() {
               <img src={Github} alt="Github" />
             </IconButton>
             <IconButton
-              href="http://wormholecrypto.medium.com"
+              href="https://medium.com/stackos"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -231,7 +248,15 @@ export default function Footer() {
               <img src={Medium} alt="Medium" />
             </IconButton>
             <IconButton
-              href="https://t.me/wormholecrypto"
+              href="https://www.youtube.com/channel/UCDOypimXY0ubjfNH3cr_owA"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.socialIcon}
+            >
+              <img src={Youtube} alt="Youtube" />
+            </IconButton>
+            <IconButton
+              href="https://t.me/StackOS"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -239,30 +264,48 @@ export default function Footer() {
               <img src={Telegram} alt="Telegram" />
             </IconButton>
             <IconButton
-              href="https://twitter.com/portalbridge_"
+              href="https://twitter.com/DeployOnStackOS"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
             >
               <img src={Twitter} alt="Twitter" />
             </IconButton>
+            <div className={classes.footer_last_column}>
+            <div className={classes.footer_last_column_1}>
+              <Typography className={classes.socialHeader} >
+                Funded by:
+              </Typography>
+              <a href="https://decloud.org/" target="__blank">
+                <img src={DeCloud} alt="DeCloud" style={{width: '100%'}}/>
+              </a>
+              </div>
+              <div className={classes.footer_last_column_1}>      
+                <Typography className={classes.socialHeader}>
+                  Deployed on:
+                </Typography>
+                <a href="https://www.stackos.io/" target="__blank">
+                <img src={StackOS} alt="StackOS" style={{width: '100%', minWidth: '117px'}}/>
+                </a>
+                </div>
+            </div>
           </div>
           <div className={classes.copyWrapper}>
             <Typography variant="body2" gutterBottom>
-              2022 &copy; Wormhole. All Rights Reserved.
+              2022 &copy; StackOS. All Rights Reserved.
             </Typography>
           </div>
           <Typography variant="body2">
-            This Interface is an open source software portal to Wormhole, a
-            cross chain messaging protocol. THIS INTERFACE AND THE WORMHOLE
+            This Interface is an open source software portal to StackOS, a
+            cross chain messaging protocol. THIS INTERFACE AND THE STACKOS
             PROTOCOL ARE PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT
             WARRANTIES OF ANY KIND. By using or accessing this Interface or
-            Wormhole, you agree that no developer or entity involved in
+            StackOS, you agree that no developer or entity involved in
             creating, deploying, maintaining, operating this Interface or
-            Wormhole, or causing or supporting any of the foregoing, will be
+            StackOS, or causing or supporting any of the foregoing, will be
             liable in any manner for any claims or damages whatsoever associated
             with your use, inability to use, or your interaction with other
-            users of, this Interface or Wormhole, or this Interface or Wormhole
+            users of, this Interface or StackOS, or this Interface or StackOS
             themselves, including any direct, indirect, incidental, special,
             exemplary, punitive or consequential damages, or loss of profits,
             cryptocurrencies, tokens, or anything else of value. By using or

@@ -6,7 +6,7 @@ import {
 import { getAddress } from "@ethersproject/address";
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import { VerifiedUser } from "@material-ui/icons";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
@@ -46,6 +46,7 @@ import StepDescription from "../StepDescription";
 import { TokenSelector } from "../TokenSelectors/SourceTokenSelector";
 import SourceAssetWarning from "./SourceAssetWarning";
 import ChainWarningMessage from "../ChainWarningMessage";
+import { allowedChainedSort } from "../../utils/allowedChainedSort";
 
 const useStyles = makeStyles((theme) => ({
   chainSelectWrapper: {
@@ -72,35 +73,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Source() {
+  
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const sourceChain = useSelector(selectTransferSourceChain);
   const targetChain = useSelector(selectTransferTargetChain);
+  // Procees allowed channel
+  const allowed_chain = allowedChainedSort()
+  // filter process chain
+  const filter = CHAINS.filter((elm) => allowed_chain?.find((name) => elm.name === name.name))
+  const [newSourceChain, setNewSourceChain] = useState(sourceChain)
+  const [newtargetChain, setNewtargetChain] = useState(targetChain)
+  useEffect(() => {
+    setNewSourceChain(filter[0].id)
+    setNewtargetChain(filter[1].id)
+  }, [])
   const targetChainOptions = useMemo(
-    () => CHAINS.filter((c) => c.id !== sourceChain),
-    [sourceChain]
-  );
+    () => filter.filter((c) => c.id !== newSourceChain),
+    [filter, sourceChain, newSourceChain]
+    );
   const isSourceTransferDisabled = useMemo(() => {
-    return getIsTransferDisabled(sourceChain, true);
-  }, [sourceChain]);
+    return getIsTransferDisabled(newSourceChain, true);
+  }, [newSourceChain]);
   const isTargetTransferDisabled = useMemo(() => {
-    return getIsTransferDisabled(targetChain, false);
-  }, [targetChain]);
+    return getIsTransferDisabled(newtargetChain, false);
+  }, [newtargetChain]);
   const parsedTokenAccount = useSelector(
     selectTransferSourceParsedTokenAccount
   );
   const hasParsedTokenAccount = !!parsedTokenAccount;
   const isSolanaMigration =
-    sourceChain === CHAIN_ID_SOLANA &&
+    newSourceChain === CHAIN_ID_SOLANA &&
     !!parsedTokenAccount &&
     !!MIGRATION_ASSET_MAP.get(parsedTokenAccount.mintKey);
   const isEthereumMigration =
-    sourceChain === CHAIN_ID_ETH &&
+    newSourceChain === CHAIN_ID_ETH &&
     !!parsedTokenAccount &&
     !!ETH_MIGRATION_ASSET_MAP.get(getAddress(parsedTokenAccount.mintKey));
   const isBscMigration =
-    sourceChain === CHAIN_ID_BSC &&
+    newSourceChain === CHAIN_ID_BSC &&
     !!parsedTokenAccount &&
     !!BSC_MIGRATION_ASSET_MAP.get(getAddress(parsedTokenAccount.mintKey));
   const isMigrationAsset =
@@ -110,27 +122,37 @@ function Source() {
   const error = useSelector(selectTransferSourceError);
   const isSourceComplete = useSelector(selectTransferIsSourceComplete);
   const shouldLockFields = useSelector(selectTransferShouldLockFields);
-  const { isReady, statusMessage } = useIsWalletReady(sourceChain);
+  const { isReady, statusMessage } = useIsWalletReady(newSourceChain);
   const handleMigrationClick = useCallback(() => {
-    if (sourceChain === CHAIN_ID_SOLANA) {
+    if (newSourceChain === CHAIN_ID_SOLANA) {
       history.push(
         `/migrate/Solana/${parsedTokenAccount?.mintKey}/${parsedTokenAccount?.publicKey}`
       );
-    } else if (sourceChain === CHAIN_ID_ETH) {
+    } else if (newSourceChain === CHAIN_ID_ETH) {
       history.push(`/migrate/Ethereum/${parsedTokenAccount?.mintKey}`);
-    } else if (sourceChain === CHAIN_ID_BSC) {
+    } else if (newSourceChain === CHAIN_ID_BSC) {
       history.push(`/migrate/BinanceSmartChain/${parsedTokenAccount?.mintKey}`);
     }
-  }, [history, parsedTokenAccount, sourceChain]);
+  }, [history, parsedTokenAccount, newSourceChain]);
   const handleSourceChange = useCallback(
     (event) => {
       dispatch(setSourceChain(event.target.value));
+      setNewSourceChain(event.target.value)
+      let id = newtargetChain === event.target.value ? filter.filter((e) => e.id !== event.target.value)[0].id : newtargetChain
+      setNewtargetChain(id)
     },
     [dispatch]
   );
+  const handleChange = (event: any) => {
+      dispatch(setSourceChain(event));
+      let id = newSourceChain === event ? filter.filter((e) => e.id !== event)[0].id : newSourceChain
+      setNewtargetChain(id)
+      setNewSourceChain(event)
+    };
   const handleTargetChange = useCallback(
     (event) => {
       dispatch(setTargetChain(event.target.value));
+      setNewtargetChain(event.target.value)
     },
     [dispatch]
   );
@@ -178,16 +200,16 @@ function Source() {
             select
             variant="outlined"
             fullWidth
-            value={sourceChain}
+            value={newSourceChain}
             onChange={handleSourceChange}
             disabled={shouldLockFields}
-            chains={CHAINS}
+            chains={filter}
           />
         </div>
         <div className={classes.chainSelectArrow}>
           <ChainSelectArrow
             onClick={() => {
-              dispatch(setSourceChain(targetChain));
+              handleChange(newtargetChain);
             }}
             disabled={shouldLockFields}
           />
@@ -198,14 +220,14 @@ function Source() {
             variant="outlined"
             select
             fullWidth
-            value={targetChain}
+            value={newtargetChain}
             onChange={handleTargetChange}
             disabled={shouldLockFields}
             chains={targetChainOptions}
           />
         </div>
       </div>
-      <KeyAndBalance chainId={sourceChain} />
+      <KeyAndBalance chainId={newSourceChain} />
       {isReady || uiAmountString ? (
         <div className={classes.transferField}>
           <TokenSelector disabled={shouldLockFields} />
@@ -222,12 +244,12 @@ function Source() {
         </Button>
       ) : (
         <>
-          <LowBalanceWarning chainId={sourceChain} />
-          {sourceChain === CHAIN_ID_SOLANA && CLUSTER === "mainnet" && (
+          <LowBalanceWarning chainId={newSourceChain} />
+          {newSourceChain === CHAIN_ID_SOLANA && CLUSTER === "mainnet" && (
             <SolanaTPSWarning />
           )}
           <SourceAssetWarning
-            sourceChain={sourceChain}
+            sourceChain={newSourceChain}
             sourceAsset={parsedTokenAccount?.mintKey}
           />
           {hasParsedTokenAccount ? (
@@ -246,8 +268,8 @@ function Source() {
               }
             />
           ) : null}
-          <ChainWarningMessage chainId={sourceChain} />
-          <ChainWarningMessage chainId={targetChain} />
+          <ChainWarningMessage chainId={newSourceChain} />
+          <ChainWarningMessage chainId={newtargetChain} />
           <ButtonWithLoader
             disabled={
               !isSourceComplete ||

@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 24,
   },
 }));
-
 const createChainMenuItem = ({ id, name, logo }: ChainInfo, classes: any) => (
   <MenuItem key={id} value={id}>
     <ListItemIcon className={classes.listItemIcon}>

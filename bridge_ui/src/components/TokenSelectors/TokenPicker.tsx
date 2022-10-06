@@ -25,10 +25,12 @@ import { useSelector } from "react-redux";
 import useMarketsMap from "../../hooks/useMarketsMap";
 import { NFTParsedTokenAccount } from "../../store/nftSlice";
 import { selectTransferTargetChain } from "../../store/selectors";
+import { allowedChainedSort } from "../../utils/allowedChainedSort";
 import { balancePretty } from "../../utils/balancePretty";
 import { AVAILABLE_MARKETS_URL, CHAINS_BY_ID } from "../../utils/consts";
 import { shortenAddress } from "../../utils/solana";
 import NFTViewer from "./NFTViewer";
+
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -134,7 +136,6 @@ export const BasicAccountRender = (
   const name = account.name || "Unknown";
   const tokenId = account.tokenId;
   const shouldDisplayBalance = !displayBalance || displayBalance(account);
-
   const nftContent = (
     <div className={classes.tokenOverviewContainer}>
       <div className={classes.tokenImageContainer}>
@@ -188,16 +189,16 @@ export const BasicAccountRender = (
         }
       </div>
       <div>
-        {shouldDisplayBalance ? (
+        {/* {shouldDisplayBalance === true ? ( */}
           <>
             <Typography variant="body2">{"Balance"}</Typography>
             <Typography variant="h6">
               {balancePretty(account.uiAmountString)}
             </Typography>
           </>
-        ) : (
+        {/* ) : (
           <div />
-        )}
+        )} */}
       </div>
     </div>
   );
@@ -300,7 +301,6 @@ export default function TokenPicker({
           newOption = option;
         }
         await onChange(newOption);
-        closeDialog();
       } catch (e: any) {
         if (e.message?.includes("v1")) {
           setSelectionError(e.message);
@@ -311,7 +311,7 @@ export default function TokenPicker({
         }
       }
     },
-    [getAddress, onChange, closeDialog]
+    [getAddress, onChange]
   );
 
   const resetAccountsWrapper = useCallback(() => {
@@ -595,11 +595,47 @@ export default function TokenPicker({
       </DialogContent>
     </Dialog>
   );
-
+  // find token in custom hook
+  const find = allowedChainedSort().filter((elm) => elm.name === CHAINS_BY_ID[chainId].name)[0]
+  // select stackos token
+  value = options?.filter((elm) => elm.mintKey === find.token)[0]
+  useEffect(() => {
+    const handleSelectOptions = async (option: NFTParsedTokenAccount | null) => {
+        setSelectionError("");
+        let newOption = null;
+        try {
+          //Covalent balances tend to be stale, so we make an attempt to correct it at selection time.
+          if (getAddress && !option?.isNativeAsset) {
+            newOption = await getAddress(option!.mintKey, option?.tokenId);
+            newOption = {
+              ...option,
+              ...newOption,
+              // keep logo and uri from covalent / market list / etc (otherwise would be overwritten by undefined)
+              logo: option?.logo || newOption.logo,
+              uri: option?.uri || newOption.uri,
+            } as NFTParsedTokenAccount;
+          } else {
+            newOption = option;
+          }
+          await onChange(newOption);
+        } catch (e: any) {
+          if (e.message?.includes("v1")) {
+            setSelectionError(e.message);
+          } else {
+            setSelectionError(
+              "Unable to retrieve required information about this token. Ensure your wallet is connected, then refresh the list."
+            );
+          }
+        }
+      }
+    if(value !== undefined){
+      handleSelectOptions(value)
+    }
+  }, [value])
   const selectionChip = (
     <div className={classes.selectionButtonContainer}>
       <Button
-        onClick={openDialog}
+        // onClick={openDialog}
         disabled={disabled}
         variant="outlined"
         startIcon={<KeyboardArrowDownIcon />}

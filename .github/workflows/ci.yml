@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: staging
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  ################################################################################ BUILD
+  build-image:
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.image-tag.outputs.tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+
+      - if: ${{ github.ref == 'refs/heads/master' }}
+        name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          WITH_V: false
+
+      - id: image-tag
+        run: |
+          if [ ${{ github.ref }} == 'refs/heads/master' ]; then
+            echo "::set-output name=tag::$(git describe --tags $(git rev-list --tags --max-count=1))"
+          elif [ ${{ github.ref }} == 'refs/heads/staging' ]; then
+            echo "::set-output name=tag::staging-$(git rev-parse --short HEAD)"
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build image & save to tmp
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: stackos/${{ secrets.PROJECT_NAME }}:${{ steps.image-tag.outputs.tag }}
+          outputs: type=docker,dest=/tmp/myimage.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: myimage
+          path: /tmp/myimage.tar
+
+  ################################################################################ PUSH
+  push-image:
+    runs-on: ubuntu-latest
+    needs: build-image
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: myimage
+          path: /tmp
+
+      - name: Load image
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Push image
+        run: |
+          docker push stackos/${{ secrets.PROJECT_NAME }}:${{ needs.build-image.outputs.image-tag }}
+
+      - name: Remove temp docker image
+        run: |
+          rm -rf /tmp/myimage.tar
+
+  ############################################################################### DEPLOY-STAGING
+  deploy-to-gke-staging:
+    if: ${{ github.ref == 'refs/heads/staging' }}
+    runs-on: ubuntu-latest
+    needs: [build-image, push-image]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get GKE Credentials
+        uses: 'google-github-actions/get-gke-credentials@v0.2.1'
+        with:
+          cluster_name: ${{ secrets.MARVEL_CLUSTER_NAME }}
+          location: 'us-central1'
+          credentials: ${{ secrets.MARVEL_GCP_CREDENTIALS }}
+
+      - name: Deploy Docker image to GKE - Staging
+        run: |
+          kubectl patch deployment ${{ secrets.PROJECT_NAME }}-${{ secrets.MARVEL_CLUSTER_NAME }} --namespace ${{ secrets.NAMESPACE }} -p '{"spec":{"template":{"spec":{"containers":[{"name":"${{ secrets.PROJECT_NAME }}-${{ secrets.MARVEL_CLUSTER_NAME }}","image":"stackos/${{ secrets.PROJECT_NAME }}:${{ needs.build-image.outputs.image-tag }}"}]}}}}'
+          kubectl describe deployments.apps ${{ secrets.PROJECT_NAME }}-${{ secrets.MARVEL_CLUSTER_NAME }} --namespace ${{ secrets.NAMESPACE }} |grep -i image
+          kubectl get po --namespace ${{ secrets.NAMESPACE }} |grep ${{ secrets.PROJECT_NAME }}-${{ secrets.MARVEL_CLUSTER_NAME }}
