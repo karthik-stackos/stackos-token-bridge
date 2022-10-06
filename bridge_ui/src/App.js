@@ -140,7 +140,11 @@ function App() {
             to="/transfer"
             className={classes.brandLink}
           >
-            <img src={window._env_.REACT_APP_LOGO || StackOS} alt="StackOS" className={classes.wormholeIcon} />
+            <img
+              src={window._env_.REACT_APP_LOGO || StackOS}
+              alt="StackOS"
+              className={classes.wormholeIcon}
+            />
           </Link>
           <div className={classes.spacer} />
           <Hidden implementation="css" xsDown>
@@ -151,9 +155,9 @@ function App() {
                 color="inherit"
                 className={classes.link}
               >
-                Bridge
+                Home
               </Link>
-              <Link
+              {/* <Link
                 href="https://curved-variraptor-e0b.notion.site/StackOS-Community-NFT-Nodes-FAQ-37411cf5e7f84aafa9307a9bf5a17f3f"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -161,16 +165,8 @@ function App() {
                 className={classes.link}
               >
                 FAQ
-              </Link>
-              <Link
-                component={NavLink}
-                to="/stats"
-                size="small"
-                color="inherit"
-                className={classes.link}
-              >
-                Stats
-              </Link>
+              </Link> */}
+
               <Link
                 href={window._env_.REACT_APP_LINK_ADDRESS}
                 target="_blank"
@@ -179,6 +175,15 @@ function App() {
                 className={classes.link}
               >
                 {window._env_.REACT_APP_LINK_NAME}
+              </Link>
+              <Link
+                target="_blank"
+                href={"https://analytics.stackos.io/"}
+                size="small"
+                color="inherit"
+                className={classes.link}
+              >
+                Analytics Dashboard
               </Link>
             </div>
           </Hidden>
@@ -212,16 +217,14 @@ function App() {
           </Typography>
         </AppBar>
       ) : null}
-      <div/>
+      <div />
       {["/transfer", "/nft", "/redeem"].includes(pathname) ? (
         <Container maxWidth="md" style={{ paddingBottom: 24 }}>
           <HeaderText
             white
             subtitle={
               <>
-                <Typography>
-                  {window._env_.REACT_APP_SUBTITLE}
-                </Typography>
+                <Typography>{window._env_.REACT_APP_SUBTITLE}</Typography>
                 {/* <Typography>
                   Unlike many other bridges, you avoid double wrapping and never
                   have to retrace your steps.
@@ -237,7 +240,7 @@ function App() {
             onChange={handleTabChange}
             indicatorColor="primary"
           >
-            <Tab label="Tokens" value="/transfer"/>
+            <Tab label="Tokens" value="/transfer" />
             <Tab label="NFTs" value="/nft" />
             <Tab label="Redeem" value="/redeem" to="/redeem" />
           </Tabs>

@@ -50,10 +50,10 @@ export const theme = responsiveFontSizes(
     },
 
     typography: {
-      fontFamily: "'Poppins', sans-serif",
+      fontFamily: "'Inter', sans-serif",
       fontSize: 13,
       h1: {
-        fontFamily: "Suisse BP Intl, sans-serif",
+        fontFamily: "'Inter', sans-serif",
         lineHeight: 0.9,
         letterSpacing: -2,
         fontWeight: "bold",
@@ -63,7 +63,7 @@ export const theme = responsiveFontSizes(
       },
       h4: {
         fontWeight: "600",
-        fontFamily: "Suisse BP Intl, sans-serif",
+        fontFamily: "'Inter', sans-serif",
         letterSpacing: -1.02,
       },
     },
@@ -126,7 +126,6 @@ export const theme = responsiveFontSizes(
           letterSpacing: ".1em",
           backgroundColor: window._env_.REACT_APP_PRIMARY_COLOR,
           borderColor: window._env_.REACT_APP_PRIMARY_COLOR,
-          
         },
         outlinedSizeSmall: {
           padding: "6px 9px",
@@ -138,10 +137,9 @@ export const theme = responsiveFontSizes(
           color: window._env_.REACT_APP_TEXT_COLOR,
           "&:hover": {
             backgroundColor: window._env_.REACT_APP_TEXT_COLOR,
-            color: window._env_.REACT_APP_PRIMARY_COLOR
-          }
-        }
-        
+            color: window._env_.REACT_APP_PRIMARY_COLOR,
+          },
+        },
       },
       MuiLink: {
         root: {
@@ -210,7 +208,7 @@ export const theme = responsiveFontSizes(
         },
         textColorInherit: {
           opacity: 1,
-        }
+        },
       },
       MuiTableCell: {
         root: {

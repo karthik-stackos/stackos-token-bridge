@@ -3,7 +3,7 @@ import { Link as RouterLink, NavLink } from "react-router-dom";
 import Discord from "../icons/Discord.svg";
 import Github from "../icons/Github.svg";
 import Medium from "../icons/Medium.svg";
-import StackOS from "../icons/logo.svg";
+import StackOS from "../icons/StackOS_Logo_V1.0.svg"
 import DeCloud from "../icons/DECLOUD_FOUNDATION.svg";
 import Telegram from "../icons/Telegram.svg";
 import Twitter from "../icons/Twitter.svg";
